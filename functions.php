@@ -30,7 +30,7 @@ require_once('library/bones.php'); // if you remove this, bones will break
 	- example custom taxonomy (like categories)
 	- example custom taxonomy (like tags)
 */
-//require_once('library/custom-post-type.php'); // you can disable this if you like
+require_once('library/custom-post-type.php'); // you can disable this if you like
 /*
 3. library/admin.php
 	- removing some default WordPress dashboard widgets
@@ -38,15 +38,18 @@ require_once('library/bones.php'); // if you remove this, bones will break
 	- adding custom login css
 	- changing text in footer of admin
 */
-require_once('library/admin.php'); // this comes turned off by default
+//require_once('library/admin.php'); // this comes turned off by default
 /*
 4. library/translation/translation.php
 	- adding support for other languages
-*/
-// require_once('library/translation/translation.php'); // this comes turned off by default
-
-add_action('after_setup_theme', 'my_translation');
-function my_translation(){
+	
+	This should be unnecessary: require_once('library/translation/translation.php');
+	
+	Loading translation text domain correctly:
+	- See http://codex.wordpress.org/Function_Reference/load_theme_textdomain#Examples
+ */
+add_action('after_setup_theme', 'get_my_translation');
+function get_my_translation(){
 	load_theme_textdomain( 'bonestheme', get_template_directory() .'/library/translation' );
 }
 
@@ -89,17 +92,6 @@ function bones_register_sidebars() {
     	'after_title' => '</h4>',
     ));
 	
-	register_sidebar(array(
-    	'id' => 'header_widget_overlay',
-
-    	'name' => __('Kopf Bildbereich', 'bonestheme'),
-    	'description' => __('Wird über dem Titelbild angezeigt', 'bonestheme'),
-    	'before_widget' => '<div id="%1$s" class="widget %2$s">',
-    	'after_widget' => '</div>',
-    	'before_title' => '<h4 class="widgettitle">',
-    	'after_title' => '</h4>',
-    ));
-
 	/*
 	to add more sidebars or widgetized areas, just copy
 	and edit the above sidebar code. In order to call
